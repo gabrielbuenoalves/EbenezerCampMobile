@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../services/api_service.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
+//import '../services/api_service.dart';
 import 'register_screen.dart';
+import 'forgot_password_screen.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,29 +27,20 @@ class _LoginScreenState extends State<LoginScreen> {
         _errorMessage = null;
       });
 
-      final token = await ApiService.login(
-        _emailController.text.trim(),
-        _senhaController.text.trim(),
-      );
+      await Future.delayed(const Duration(seconds: 1)); // Simula carregamento
 
       setState(() {
         _loading = false;
       });
 
-      if (token != null) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', token);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login realizado com sucesso')),
+      );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login realizado com sucesso')),
-        );
-
-        // TODO: Navegar para tela principal após login
-      } else {
-        setState(() {
-          _errorMessage = "E-mail ou senha inválidos.";
-        });
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
     }
   }
 
@@ -98,9 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Informe seu e-mail';
                         }
-                        if (!value.contains('@')) {
+                        if (!(value.contains('@gmail.com') ||
+                            value.contains('@outlook.com') ||
+                            value.contains('@hotmail.com') ||
+                            value.contains('@yahoo.com'))) {
                           return 'E-mail inválido';
                         }
+
                         return null;
                       },
                     ),
@@ -164,7 +161,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // TODO: navegar para recuperação de senha
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen(),
+                              ),
+                            );
                           },
                           child: const Text('Esqueci a senha'),
                         ),
