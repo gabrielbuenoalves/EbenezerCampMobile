@@ -9,7 +9,7 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 9, 20, 49),
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
@@ -19,16 +19,19 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo do acampamento
+                  // Logo com bordas arredondadas
                   Align(
                     alignment: Alignment.topCenter,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 32, bottom: 16),
-                      child: SizedBox(
-                        height: 120,
-                        child: Image.asset(
-                          'assets/logoEbenezer.png',
-                          fit: BoxFit.contain,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: SizedBox(
+                          height: 120,
+                          child: Image.asset(
+                            'assets/logoEbenezer.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -39,7 +42,10 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
                   const Text(
                     'Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
 
                   const SizedBox(height: 32),
@@ -47,13 +53,22 @@ class ForgotPasswordConfirmationScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 199, 151, 8),
+                        foregroundColor: const Color(0xFF0D1B2A),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        textStyle: const TextStyle(fontSize: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const LoginScreen(),
                           ),
-                          (route) => false, // Remove todas as telas anteriores
+                          (route) => false,
                         );
                       },
                       child: const Text('Voltar ao login'),

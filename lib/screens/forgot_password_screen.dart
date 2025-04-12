@@ -37,26 +37,31 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 9, 20, 49),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: deviceHeight,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Stack(
-                children: [
-                  Column(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                height: deviceHeight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Logo
+                      const SizedBox(height: 32),
+
+                      // Logo com bordas arredondadas
                       Padding(
-                        padding: const EdgeInsets.only(top: 32, bottom: 16),
-                        child: SizedBox(
-                          height: 120,
-                          child: Image.asset(
-                            'assets/logoEbenezer.png',
-                            fit: BoxFit.contain,
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: SizedBox(
+                            height: 120,
+                            child: Image.asset(
+                              'assets/logoEbenezer.png',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
@@ -64,9 +69,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       const SizedBox(height: 8),
 
                       const Text(
-                        'Informe seu e-mail cadastrado para um link para a recuperação da senha.',
+                        'Informe seu e-mail para enviarmos um link de recuperação de senha.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
 
                       const SizedBox(height: 24),
@@ -78,9 +86,29 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: 'E-mail',
-                                border: OutlineInputBorder(),
+                              style: const TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                hintText: 'Digite seu e-mail',
+                                hintStyle:
+                                    const TextStyle(color: Colors.black54),
+                                prefixIcon: const Icon(Icons.email,
+                                    color: Colors.black54),
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 16),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                      color: Colors.transparent),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 199, 151, 8),
+                                    width: 2,
+                                  ),
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -98,6 +126,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               child: ElevatedButton(
                                 onPressed:
                                     _loading ? null : _enviarEmailRecuperacao,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 199, 151, 8),
+                                  foregroundColor: const Color(0xFF0D1B2A),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
+                                  textStyle: const TextStyle(fontSize: 16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
                                 child: _loading
                                     ? const CircularProgressIndicator()
                                     : const Text('Enviar'),
@@ -117,22 +156,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                     ],
                   ),
-
-                  // Botão de voltar
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 50,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      color: Colors.indigo,
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
+
+            // Botão de voltar fixo no canto superior esquerdo
+            Positioned(
+              top: 8,
+              left: 8,
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.white,
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
         ),
       ),
     );

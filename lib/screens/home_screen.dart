@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Import necessário para navegação
+import 'login_screen.dart';
+import 'profile_screen.dart';
+import 'bedroom_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const backgroundColor = Color(0xFFF5F7FA);
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -20,14 +24,42 @@ class HomeScreen extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: const Text('Confirmação'),
-                    content: const Text('Deseja realmente sair do aplicativo?'),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    title: Row(
+                      children: const [
+                        Icon(Icons.warning_amber_rounded, color: Colors.orange),
+                        SizedBox(width: 10),
+                        Text(
+                          'Confirmação',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    content: const Text(
+                      'Deseja realmente sair do aplicativo?',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actionsPadding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     actions: [
                       TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.grey[700],
+                          textStyle: const TextStyle(fontSize: 15),
+                        ),
                         onPressed: () => Navigator.of(context).pop(),
                         child: const Text('Cancelar'),
                       ),
-                      TextButton(
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop(); // Fecha o diálogo
                           Navigator.pushReplacement(
@@ -51,6 +83,7 @@ class HomeScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
                 height: 100,
@@ -65,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
+                  color: Color(0xFF1D3557),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -74,7 +107,8 @@ class HomeScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                elevation: 4,
+                elevation: 6,
+                color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -85,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xFF1D3557),
                         ),
                       ),
                       SizedBox(height: 8),
@@ -105,7 +139,8 @@ class HomeScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                elevation: 4,
+                elevation: 6,
+                color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -116,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xFF1D3557),
                         ),
                       ),
                       SizedBox(height: 8),
@@ -135,6 +170,7 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -145,12 +181,31 @@ class HomeScreen extends StatelessWidget {
             label: 'Perfil',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Configurações',
+            icon: Icon(Icons.bed_outlined),
+            label: 'Quarto',
           ),
         ],
         onTap: (index) {
-          // TODO: Navegação futura
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileScreen(
+                  nome: 'Bielzera bot',
+                  email: 'bielzeradev@gmail.com',
+                  telefone: '(19) 99999-9999',
+                  funcao: 'Trabalhador',
+                ),
+              ),
+            );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const QuartoScreen(),
+              ),
+            );
+          }
         },
       ),
     );
