@@ -1,5 +1,5 @@
 class AppConfig {
-  static const bool isProduction = true; // Altere para true quando publicar
+  static const bool isProduction = false; // Altere para true quando publicar
 
   static String get baseUrl {
     if (isProduction) {
