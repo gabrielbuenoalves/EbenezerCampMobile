@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'profile_screen.dart';
 import 'bedroom_screen.dart';
+import 'credits_screen.dart';
+import 'events_screen.dart'; // Importe a tela de eventos
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  final bool isAdmin;
 
+  const HomeScreen({super.key, required this.isAdmin});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     const backgroundColor = Color(0xFFF5F7FA);
@@ -15,7 +24,96 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: PopupMenuButton<String>(
+          icon: const Icon(Icons.menu, color: Colors.blueAccent),
+          onSelected: (value) {
+            if (value == 'transacoes') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TransactionsScreen(),
+                ),
+              );
+            }
+          },
+          itemBuilder: (BuildContext context) {
+            List<PopupMenuEntry<String>> items = [];
+
+            if (widget.isAdmin) {
+              items.add(
+                const PopupMenuItem<String>(
+                  value: 'transacoes',
+                  child: Text('Transações'),
+                ),
+              );
+            }
+
+            return items;
+          },
+        ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline, color: Colors.blueAccent),
+            tooltip: 'Informações do sistema',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  contentPadding: const EdgeInsets.all(24),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Text(
+                          "🎯 Objetivo",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1D3557),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          "Este aplicativo tem como objetivo auxiliar na gestão de pessoas durante o acampamento da igreja. "
+                          "Os participantes são organizados por quartos divididos por sexo, cada um com um líder responsável. "
+                          "Além disso, o app também gerencia o saldo individual de cada pessoa, registrando gastos feitos na cantina.",
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.justify,
+                        ),
+                        SizedBox(height: 24),
+                        Text(
+                          "👥 Integrantes do Projeto",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1D3557),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          "Gabriel Bueno Alves\nOtavio Lucas de Oliveira",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Fechar'),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.red),
             tooltip: 'Sair',
@@ -61,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.of(context).pop(); // Fecha o diálogo
+                          Navigator.of(context).pop();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -94,75 +192,17 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               const Text(
-                "Sobre o Aplicativo",
+                "Bem vindo!",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1D3557),
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 24),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 6,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "🎯 Objetivo",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1D3557),
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        "Este aplicativo tem como objetivo auxiliar na gestão de pessoas durante o acampamento da igreja. "
-                        "Os participantes são organizados por quartos divididos por sexo, cada um com um líder responsável. "
-                        "Além disso, o app também gerencia o saldo individual de cada pessoa, registrando gastos feitos na cantina.",
-                        style: TextStyle(fontSize: 16),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 6,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "👥 Integrantes do Projeto",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1D3557),
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        "Gabriel Bueno Alves\nOtavio Lucas de Oliveira",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const SizedBox(height: 8),
+              const SizedBox(height: 16),
+              // Adicione aqui os eventos se houver algum ou algum conteúdo alternativo
             ],
           ),
         ),
@@ -172,18 +212,12 @@ class HomeScreen extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Início',
-          ),
+              icon: Icon(Icons.bed_outlined), label: 'Quarto'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bed_outlined),
-            label: 'Quarto',
-          ),
+              icon: Icon(Icons.event), label: 'Eventos'), // Novo item
         ],
         onTap: (index) {
           if (index == 1) {
@@ -203,6 +237,16 @@ class HomeScreen extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => const QuartoScreen(),
+              ),
+            );
+          } else if (index == 3) {
+            // Redireciona para a tela de eventos
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateEventScreen(
+                  isAdmin: widget.isAdmin,
+                ), // Usando widget.isAdmin
               ),
             );
           }
