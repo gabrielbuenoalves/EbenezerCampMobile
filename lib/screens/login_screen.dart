@@ -18,6 +18,9 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _loading = false;
   String? _errorMessage;
 
+  //simular um usuário admin
+  bool isAdmin = true; // Defina se o usuário é admin aqui (simulado)
+
   Future<void> _realizarLogin() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -35,9 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
         const SnackBar(content: Text('Login realizado com sucesso')),
       );
 
+      // Navegar para a HomeScreen com o parâmetro isAdmin
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(
+            isAdmin: isAdmin,
+          ), // Passando o valor de isAdmin
+        ),
       );
     }
   }
@@ -47,8 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor:
-          const Color.fromARGB(255, 9, 20, 49), // Fundo azul escuro
+      backgroundColor: const Color.fromARGB(255, 9, 20, 49),
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
