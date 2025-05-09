@@ -3,7 +3,8 @@ import 'login_screen.dart';
 import 'profile_screen.dart';
 import 'bedroom_screen.dart';
 import 'credits_screen.dart';
-import 'events_screen.dart'; // Importe a tela de eventos
+import 'events_screen.dart';
+import 'stock_screen.dart'; // Import da tela de estoque
 
 class HomeScreen extends StatefulWidget {
   final bool isAdmin;
@@ -27,13 +28,23 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: PopupMenuButton<String>(
           icon: const Icon(Icons.menu, color: Colors.blueAccent),
           onSelected: (value) {
-            if (value == 'transacoes') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const TransactionsScreen(),
-                ),
-              );
+            switch (value) {
+              case 'transacoes':
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TransactionsScreen(),
+                  ),
+                );
+                break;
+              case 'estoque':
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InventoryScreen(),
+                  ),
+                );
+                break;
             }
           },
           itemBuilder: (BuildContext context) {
@@ -44,6 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 const PopupMenuItem<String>(
                   value: 'transacoes',
                   child: Text('Transações'),
+                ),
+              );
+              items.add(
+                const PopupMenuItem<String>(
+                  value: 'estoque',
+                  child: Text('Estoque'),
                 ),
               );
             }
@@ -202,7 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 8),
               const SizedBox(height: 16),
-              // Adicione aqui os eventos se houver algum ou algum conteúdo alternativo
             ],
           ),
         ),
@@ -216,8 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
           BottomNavigationBarItem(
               icon: Icon(Icons.bed_outlined), label: 'Quarto'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.event), label: 'Eventos'), // Novo item
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Eventos'),
         ],
         onTap: (index) {
           if (index == 1) {
@@ -240,13 +255,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else if (index == 3) {
-            // Redireciona para a tela de eventos
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => CreateEventScreen(
                   isAdmin: widget.isAdmin,
-                ), // Usando widget.isAdmin
+                ),
               ),
             );
           }
